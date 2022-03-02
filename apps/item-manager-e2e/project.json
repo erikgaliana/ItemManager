@@ -1,0 +1,28 @@
+{
+  "root": "apps/item-manager-e2e",
+  "sourceRoot": "apps/item-manager-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/item-manager-e2e/cypress.json",
+        "devServerTarget": "item-manager:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "item-manager:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/item-manager-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["item-manager"]
+}
