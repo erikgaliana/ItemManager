@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "item-manager": "apps/item-manager",
-    "item-manager-e2e": "apps/item-manager-e2e"
+    "item-manager-e2e": "apps/item-manager-e2e",
+    "items-services": "libs/items-services"
   }
 }
