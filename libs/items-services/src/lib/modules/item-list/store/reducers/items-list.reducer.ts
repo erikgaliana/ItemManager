@@ -8,12 +8,12 @@ import { ItemsActions } from '../actions/action-types';
 import { ItemsModel } from '../../../../models/items-list.models';
 
 export interface ItemsDataState {
-  products: ItemsModel[];
+  items: ItemsModel[];
   errors: any;
 }
 
 export const initialItemsDataState: ItemsDataState = {
-  products: [],
+  items: [],
   errors: null,
 };
 
