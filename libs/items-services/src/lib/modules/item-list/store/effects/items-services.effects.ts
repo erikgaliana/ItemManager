@@ -1,29 +1,39 @@
+// Angular
 import { Injectable } from '@angular/core';
-import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { fetch } from '@nrwl/angular';
 
-import * as ItemsServicesActions from './store/actions/items-services.actions';
-import * as ItemsServicesFeature from './items-services.reducer';
+// Rxjs
+import { exhaustMap, map, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+// NgRx
+import { createEffect, Actions, ofType } from '@ngrx/effects';
+
+// Api
+import { ItemsApi } from '../../../../api/itemsApi';
+
+// Store
+import { ItemsActions } from '../actions/action-types';
+
+// Models
+import { ItemsModel } from '../../../../models/items-list.models';
 
 @Injectable()
-export class ItemsServicesEffects {
-  init$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ItemsServicesActions.init),
-      fetch({
-        run: (action) => {
-          // Your custom service 'load' logic goes here. For now just return a success action...
-          return ItemsServicesActions.loadItemsServicesSuccess({
-            itemsServices: [],
-          });
-        },
-        onError: (action, error) => {
-          console.error('Error', error);
-          return ItemsServicesActions.loadItemsServicesFailure({ error });
-        },
-      })
-    )
-  );
+export class ItemsEffects {
+  constructor(private readonly actions$: Actions, private itemsApi: ItemsApi) {}
 
-  constructor(private readonly actions$: Actions) {}
+  getItemsData$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ItemsActions.loadItems),
+      exhaustMap(() => {
+        return this.itemsApi.getProducts().pipe(
+          map((response: ItemsModel[]) => {
+            return ItemsActions.loadItemssSuccess({ products: response });
+          }),
+          catchError((error) => {
+            return of(ItemsActions.loadItemsFailure({ error }));
+          })
+        );
+      })
+    );
+  });
 }
