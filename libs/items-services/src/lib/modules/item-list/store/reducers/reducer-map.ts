@@ -8,6 +8,6 @@ export interface ItemsState {
   itemsDataState: ItemsDataState;
 }
 
-export const productsReducers: ActionReducerMap<ItemsState> = {
+export const itemsReducers: ActionReducerMap<ItemsState> = {
   itemsDataState: itemsDataReducerFunction,
 };

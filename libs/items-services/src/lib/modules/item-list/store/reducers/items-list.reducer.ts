@@ -22,7 +22,7 @@ const itemsDataReducer = createReducer(
   on(ItemsActions.loadItemssSuccess, (state, action) => {
     return {
       ...state,
-      products: action.items,
+      items: action.items,
     };
   }),
   on(ItemsActions.loadItemsFailure, (state, action) => {

@@ -17,8 +17,8 @@ export class ItemsApi {
 
   constructor(private httpClient: HttpClient) {}
 
-  /** GET Products from the server */
-  getProducts(): Observable<any> {
+  /** GET Items from the server */
+  getItems(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl)
       .pipe(tap((value) => console.log('fetched heroes', value)));

@@ -25,9 +25,9 @@ export class ItemsEffects {
     return this.actions$.pipe(
       ofType(ItemsActions.loadItems),
       exhaustMap(() => {
-        return this.itemsApi.getProducts().pipe(
+        return this.itemsApi.getItems().pipe(
           map((response: ItemsModel[]) => {
-            return ItemsActions.loadItemssSuccess({ products: response });
+            return ItemsActions.loadItemssSuccess({ items: response });
           }),
           catchError((error) => {
             return of(ItemsActions.loadItemsFailure({ error }));
