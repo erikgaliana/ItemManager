@@ -8,14 +8,14 @@ import { readFirst } from '@nrwl/angular/testing';
 import * as ItemsServicesActions from './items-services.actions';
 import { ItemsServicesEffects } from './items-services.effects';
 import { ItemsServicesFacade } from './items-services.facade';
-import { ItemsServicesEntity } from './items-services.models';
+import { ItemsServicesEntity } from '../../../models/items-services.models';
 import {
   ITEMS_SERVICES_FEATURE_KEY,
   State,
   initialState,
   reducer,
 } from './items-services.reducer';
-import * as ItemsServicesSelectors from './items-services.selectors';
+import * as ItemsServicesSelectors from '../items-services.selectors';
 
 interface TestSchema {
   itemsServices: State;

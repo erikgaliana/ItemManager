@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ItemsServicesEntity } from './items-services.models';
+import { ItemsServicesEntity } from '../../../../models/items-services.models';
 
 export const init = createAction('[ItemsServices Page] Init');
 

@@ -1,4 +1,4 @@
-import { ItemsServicesEntity } from './items-services.models';
+import { ItemsServicesEntity } from '../../../../models/items-services.models';
 import {
   itemsServicesAdapter,
   ItemsServicesPartialState,

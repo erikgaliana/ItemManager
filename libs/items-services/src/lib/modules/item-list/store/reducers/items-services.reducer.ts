@@ -1,7 +1,7 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on, Action } from '@ngrx/store';
 
-import * as ItemsServicesActions from './items-services.actions';
+import * as ItemsServicesActions from './store/actions/items-services.actions';
 import { ItemsServicesEntity } from './items-services.models';
 
 export const ITEMS_SERVICES_FEATURE_KEY = 'itemsServices';

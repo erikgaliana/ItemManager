@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import * as ItemsServicesActions from './items-services.actions';
-import { ItemsServicesEntity } from './items-services.models';
+import { ItemsServicesEntity } from '../../../../models/items-services.models';
 import { State, initialState, reducer } from './items-services.reducer';
 
 describe('ItemsServices Reducer', () => {
