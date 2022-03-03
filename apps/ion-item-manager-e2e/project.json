@@ -1,0 +1,28 @@
+{
+  "root": "apps/ion-item-manager-e2e",
+  "sourceRoot": "apps/ion-item-manager-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/ion-item-manager-e2e/cypress.json",
+        "devServerTarget": "ion-item-manager:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "ion-item-manager:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/ion-item-manager-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["ion-item-manager"]
+}
