@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "ion-item-manager": "apps/ion-item-manager",
+    "ion-item-manager-e2e": "apps/ion-item-manager-e2e",
     "item-manager": "apps/item-manager",
     "item-manager-e2e": "apps/item-manager-e2e",
     "items-services": "libs/items-services"
