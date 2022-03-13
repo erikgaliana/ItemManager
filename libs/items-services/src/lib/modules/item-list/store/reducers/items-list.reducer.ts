@@ -13,7 +13,7 @@ export interface ItemsDataState {
 }
 
 export const initialItemsDataState: ItemsDataState = {
-  items: [],
+  items: null,
   errors: null,
 };
 
