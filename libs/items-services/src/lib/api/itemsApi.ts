@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 // Interfaces
-import { itemsFromGet, ItemsModel } from '../models/items-list.models';
+import { ItemsModel } from '../models/items-list.models';
 
 @Injectable({
   providedIn: 'root',
