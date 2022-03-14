@@ -12,9 +12,9 @@ import { filter, map, Observable, Subject, take, withLatestFrom } from 'rxjs';
 
 // Store
 import { ItemsFacade } from '@item-manager/items-services';
+import { ItemsModel } from '@item-manager/items-module';
 
 // Models
-import { ItemsModel } from '@item-manager/items-models';
 
 @Component({
   selector: 'item-manager-item-list',
