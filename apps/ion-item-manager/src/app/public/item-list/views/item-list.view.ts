@@ -24,8 +24,10 @@ import { ItemsModel } from '@item-manager/items-module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemListViewComponent implements OnInit, OnDestroy {
-  paginatedItems$: Observable<ItemsModel[]>;
-  numberOfITems = 10;
+  originalItemList: ItemsModel[] = [];
+  paginatedItems: ItemsModel[] = [];
+  filteredItems: ItemsModel[] = [];
+  itemsLoaded = 5;
 
   private destroyed$: Subject<boolean> = new Subject<boolean>();
 
@@ -33,7 +35,7 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.itemsFacade.loadItemsData();
-    this.firstItems();
+    this.setOriginalItemList();
   }
 
   ngOnDestroy(): void {
@@ -41,19 +43,34 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
   }
 
   doInfinite(event: any): void {
-    this.itemsFacade.items$
-      .pipe(take(1), withLatestFrom(this.paginatedItems$))
-      .subscribe(([items, paginatedItems]) => {
-        if (paginatedItems?.length >= items?.length) {
-          event.target.disabled = true;
-          return;
-        }
-      });
+    if (this.paginatedItems?.length >= this.originalItemList?.length) {
+      event.target.disabled = true;
+      return;
+    }
 
-    setTimeout(() => {
-      this.addMoreItems();
-      event.target.complete();
-    }, 1000);
+    this.addItems();
+    event.target.complete();
+  }
+
+  getItems(ev: any) {
+    // Reset items back to all of the items
+    // const val = ev.target.value.toLowerCase();
+    // if (val && val.trim() === '') {
+    //   this.filteredItems = this.itemsFacade.items$;
+    //   return;
+    // }
+    // this.filteredItems$
+    //   .pipe(filter((items: ItemsModel[]) => !!items))
+    //   .subscribe(
+    //     (items) =>
+    //       (this.filteredItems = items.filter((item) =>
+    //         item.title.toLowerCase().includes(val)
+    //       ))
+    //   );
+  }
+
+  segmentChanged(event: any): void {
+    console.log(event.detail.value);
   }
 
   private finishDestroyedSubscription(): void {
@@ -61,19 +78,22 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  private firstItems(): void {
-    this.paginatedItems$ = this.itemsFacade.items$.pipe(
-      filter((items: ItemsModel[]) => !!items),
-      map((items) => items.slice(0, 5))
-    );
+  private setOriginalItemList(): void {
+    this.itemsFacade.items$
+      .pipe(
+        filter((items) => !!items),
+        take(1)
+      )
+      .subscribe((items) => {
+        this.originalItemList = [...items];
+        this.addItems();
+      });
   }
 
-  private addMoreItems(): void {
-    this.paginatedItems$ = this.itemsFacade.items$.pipe(
-      filter((items: ItemsModel[]) => !!items),
-      map((items) => items.slice(0, this.numberOfITems))
-    );
-
-    this.numberOfITems = this.numberOfITems + 5;
+  private addItems(): void {
+    console.log('before pagination', this.paginatedItems);
+    this.paginatedItems = this.originalItemList.slice(0, this.itemsLoaded);
+    this.itemsLoaded += 5;
+    console.log('afetr', this.paginatedItems);
   }
 }

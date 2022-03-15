@@ -1,46 +1,60 @@
 <ion-content [fullscreen]="true">
 
+    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-toolbar no-border-top>
+        <ion-segment (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="bookmarks">
+                <ion-label>Bookmarks</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="reading">
+                <ion-label>Reading List</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="shared">
+                <ion-label>Shared Links</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+    <ng-container *ngIf="itemsFacade.items$|async">
 
+        <ion-card *ngFor="let item of paginatedItems">
 
+            <img src="{{item.image}}" />
 
-    <ion-card *ngFor="let item of (paginatedItems$|async)">
+            <ion-card-content>
+                <ion-card-title>
+                    {{item.title}}
+                </ion-card-title>
+                <p>
+                    {{item.description}}
+                </p>
+            </ion-card-content>
 
-        <img src="{{item.image}}" />
+            <ion-row no-padding>
+                <ion-col>
+                    <button ion-button clear small color="danger" icon-start>
+                        <ion-icon name='star'></ion-icon>
+                        Favorite
+                    </button>
+                </ion-col>
+                <ion-col text-center>
+                    <button ion-button clear small color="danger" icon-start>
+                        <ion-icon name='musical-notes'></ion-icon>
+                        Listen
+                    </button>
+                </ion-col>
+                <ion-col text-right>
+                    <button ion-button clear small color="danger" icon-start>
+                        <ion-icon name='share-alt'></ion-icon>
+                        Share
+                    </button>
+                </ion-col>
+            </ion-row>
 
-        <ion-card-content>
-            <ion-card-title>
-                {{item.title}}
-            </ion-card-title>
-            <p>
-                {{item.description}}
-            </p>
-        </ion-card-content>
+        </ion-card>
 
-        <ion-row no-padding>
-            <ion-col>
-                <button ion-button clear small color="danger" icon-start>
-                    <ion-icon name='star'></ion-icon>
-                    Favorite
-                </button>
-            </ion-col>
-            <ion-col text-center>
-                <button ion-button clear small color="danger" icon-start>
-                    <ion-icon name='musical-notes'></ion-icon>
-                    Listen
-                </button>
-            </ion-col>
-            <ion-col text-right>
-                <button ion-button clear small color="danger" icon-start>
-                    <ion-icon name='share-alt'></ion-icon>
-                    Share
-                </button>
-            </ion-col>
-        </ion-row>
-
-    </ion-card>
-
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="doInfinite($event)">
-        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </ng-container>
 </ion-content>
