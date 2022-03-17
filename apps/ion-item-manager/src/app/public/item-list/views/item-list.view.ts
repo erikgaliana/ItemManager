@@ -12,7 +12,8 @@ import { filter, map, Observable, Subject, take, withLatestFrom } from 'rxjs';
 
 // Store
 import { ItemsFacade } from '@item-manager/items-services';
-import { ItemsModel } from '@item-manager/items-module';
+import { ItemsModel } from '@item-manager/items-models';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 // Models
 
@@ -28,10 +29,15 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
   paginatedItems: ItemsModel[] = [];
   filteredItems: ItemsModel[] = [];
   itemsLoaded = 5;
+  searchText = '';
+  keyword = 'title';
 
   private destroyed$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(public itemsFacade: ItemsFacade) {}
+  constructor(
+    public itemsFacade: ItemsFacade,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.itemsFacade.loadItemsData();
@@ -52,25 +58,17 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
     event.target.complete();
   }
 
-  getItems(ev: any) {
-    // Reset items back to all of the items
-    // const val = ev.target.value.toLowerCase();
-    // if (val && val.trim() === '') {
-    //   this.filteredItems = this.itemsFacade.items$;
-    //   return;
-    // }
-    // this.filteredItems$
-    //   .pipe(filter((items: ItemsModel[]) => !!items))
-    //   .subscribe(
-    //     (items) =>
-    //       (this.filteredItems = items.filter((item) =>
-    //         item.title.toLowerCase().includes(val)
-    //       ))
-    //   );
+  getItems(event: any) {
+    this.searchText = event.target.value;
   }
 
   segmentChanged(event: any): void {
     console.log(event.detail.value);
+    this.keyword = event.detail.value;
+  }
+
+  getImgContent(image: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(image);
   }
 
   private finishDestroyedSubscription(): void {
