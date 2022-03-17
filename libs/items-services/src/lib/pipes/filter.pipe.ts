@@ -4,8 +4,16 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'filter',
 })
 export class FilterPipe implements PipeTransform {
-  transform(list: any, text: string): any[] {
+  transform(list: any, text: string, keyword: string): any[] {
+    if (!!text || text === '') {
+      return list;
+    }
     console.log('arreglo', list);
-    return list;
+    console.log('text', text);
+    const textLower = text.toLowerCase();
+
+    return list.filter((item: any) =>
+      item[keyword].toLowerCase().includes(textLower)
+    );
   }
 }
