@@ -19,7 +19,6 @@
     </ion-toolbar>
     <ng-container *ngIf="itemsFacade.items$|async">
         <ion-card *ngFor="let item of paginatedItems | filter:searchText:keyword">
-
             <ion-card-content class="ion-align-items-center">
                 <img [src]="getImgContent(item.image)" />
                 <ion-card-title> {{item.title}} </ion-card-title>
@@ -27,7 +26,6 @@
 
                 <ion-row no-padding>
                     <ion-col size="8">
-
                         <ion-label color="secondary">
                             <b>{{item.price | currency:'€' }}</b>
                         </ion-label>
@@ -35,13 +33,14 @@
                     <ion-col size="4" class="ion-text-right">
                         <button ion-button fill="clear">
                             <ion-icon name="add"></ion-icon>
-
                         </button>
                     </ion-col>
-
                 </ion-row>
             </ion-card-content>
         </ion-card>
+        <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+            <ion-fab-button>Button</ion-fab-button>
+        </ion-fab>
 
         <ion-infinite-scroll threshold="100px" (ionInfinite)="doInfinite($event)">
             <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data...">
