@@ -5,15 +5,15 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterPipe implements PipeTransform {
   transform(list: any, text: string, keyword: string): any[] {
-    if (!!text || text === '') {
+    if (text === '') {
       return list;
     }
-    console.log('arreglo', list);
-    console.log('text', text);
-    const textLower = text.toLowerCase();
 
-    return list.filter((item: any) =>
+    const textLower = text.toLowerCase();
+    const filteredList = list.filter((item: any) =>
       item[keyword].toLowerCase().includes(textLower)
     );
+
+    return filteredList;
   }
 }
