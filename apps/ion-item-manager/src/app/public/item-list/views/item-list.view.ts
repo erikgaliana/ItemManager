@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 // Rxjs
-import { filter, map, Observable, Subject, take, withLatestFrom } from 'rxjs';
+import { filter, Subject, take } from 'rxjs';
 
 // Store
 import { ItemsFacade } from '@item-manager/items-services';
@@ -48,23 +48,22 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
     this.finishDestroyedSubscription();
   }
 
-  doInfinite(event: any): void {
+  doInfinite(eventInfinite: any): void {
     if (this.paginatedItems?.length >= this.originalItemList?.length) {
-      event.target.disabled = true;
+      eventInfinite.target.disabled = true;
       return;
     }
 
     this.addItems();
-    event.target.complete();
+    eventInfinite.target.complete();
   }
 
-  getItems(event: any) {
-    this.searchText = event.target.value;
+  getItems(eventSearch: any) {
+    this.searchText = eventSearch.target.value;
   }
 
-  segmentChanged(event: any): void {
-    console.log(event.detail.value);
-    this.keyword = event.detail.value;
+  segmentChanged(eventSegment: any): void {
+    this.keyword = eventSegment.detail.value;
   }
 
   getImgContent(image: string): SafeUrl {
@@ -89,9 +88,7 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
   }
 
   private addItems(): void {
-    console.log('before pagination', this.paginatedItems);
     this.paginatedItems = this.originalItemList.slice(0, this.itemsLoaded);
     this.itemsLoaded += 5;
-    console.log('afetr', this.paginatedItems);
   }
 }
