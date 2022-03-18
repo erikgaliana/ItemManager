@@ -38,8 +38,9 @@
                 </ion-row>
             </ion-card-content>
         </ion-card>
-        <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-            <ion-fab-button>Button</ion-fab-button>
+        <ion-fab vertical="middle" horizontal="right" slot="fixed">
+
+            <ion-fab-button (click)="openFab()">Fab</ion-fab-button>
         </ion-fab>
 
         <ion-infinite-scroll threshold="100px" (ionInfinite)="doInfinite($event)">

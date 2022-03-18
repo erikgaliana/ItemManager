@@ -6,6 +6,10 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
+// Ionic
+import { ModalController } from '@ionic/angular';
 
 // Rxjs
 import { filter, Subject, take } from 'rxjs';
@@ -13,7 +17,9 @@ import { filter, Subject, take } from 'rxjs';
 // Store
 import { ItemsFacade } from '@item-manager/items-services';
 import { ItemsModel } from '@item-manager/items-models';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
+// Modal
+import { FabModalComponent } from '../../fab-modal/views/fab-modal.page';
 
 // Models
 
@@ -27,7 +33,6 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class ItemListViewComponent implements OnInit, OnDestroy {
   originalItemList: ItemsModel[] = [];
   paginatedItems: ItemsModel[] = [];
-  filteredItems: ItemsModel[] = [];
   itemsLoaded = 5;
   searchText = '';
   keyword = 'title';
@@ -36,7 +41,8 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
 
   constructor(
     public itemsFacade: ItemsFacade,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private modalController: ModalController
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +74,14 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
 
   getImgContent(image: string): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(image);
+  }
+
+  async openFab() {
+    const modal = await this.modalController.create({
+      component: FabModalComponent,
+      cssClass: 'fab-modal',
+    });
+    await modal.present();
   }
 
   private finishDestroyedSubscription(): void {
