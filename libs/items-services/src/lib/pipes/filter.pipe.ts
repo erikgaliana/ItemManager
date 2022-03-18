@@ -10,10 +10,12 @@ export class FilterPipe implements PipeTransform {
     }
 
     const textLower = text.toLowerCase();
-    const filteredList = list.filter((item: any) =>
-      item[keyword].toLowerCase().includes(textLower)
-    );
-
-    return filteredList;
+    if (keyword != 'price') {
+      return list.filter((item: any) =>
+        item[keyword].toLowerCase().includes(textLower)
+      );
+    } else {
+      return list.filter((item: any) => +item[keyword] <= +textLower);
+    }
   }
 }
