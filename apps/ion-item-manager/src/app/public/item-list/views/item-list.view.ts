@@ -84,6 +84,10 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
     await modal.present();
   }
 
+  addFab(item: ItemsModel) {
+    this.itemsFacade.addFab(item);
+  }
+
   private finishDestroyedSubscription(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
