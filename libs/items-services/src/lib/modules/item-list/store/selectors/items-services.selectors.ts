@@ -21,3 +21,8 @@ export const getIsItemsLoaded = createSelector(
   getItemsDataState,
   (state) => !!state.items
 );
+
+export const getFabItems = createSelector(
+  getItemsDataState,
+  (state) => state.fabItems
+);
