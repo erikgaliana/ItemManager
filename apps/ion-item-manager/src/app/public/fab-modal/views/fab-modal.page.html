@@ -4,24 +4,43 @@
       <ion-icon name="close" slot="start"></ion-icon>
     </ion-button>
   </div>
-
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ng-container *ngIf="itemsFacade.items$|async">
-    <ion-card *ngFor="let item of itemsFacade.fabItems$|async;let i=index;trackBy:trackByItems">
-      <img [src]="getImgContent(item.image)" alt="ion" />
-      <ion-card-content class="ion-align-items-center">
-        <ion-row no-padding>
-          <ion-col size="8">
-            <ion-label color="secondary">
-              <ion-card-title> {{item.title}} </ion-card-title>
-            </ion-label>
-          </ion-col>
-          <ion-col size="4" class="ion-text-right">
-            <button ion-button fill="clear">
-              <ion-icon name="add" (click)="deleteFab(i)"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
+
+    <ion-grid fixed>
+      <ion-row justify-content-center align-items-center>
+        <ion-col size="1">
+
+        </ion-col>
+        <ion-col size="10">
+          <ion-card
+            *ngFor="let item of (itemsFacade.fabItems$|async) | filter:searchText:keyword;let i=index;trackBy:trackByItems">
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+
+              <img [src]="getImgContent(item.image)" alt="ion" />
+            </ion-row>
+            <ion-card-content class="ion-align-items-center">
+              <ion-row no-padding>
+                <ion-col size="8">
+                  <ion-label color="secondary">
+                    <ion-card-title> {{item.title}} </ion-card-title>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="4" class="ion-text-right">
+                  <button ion-button fill="clear">
+                    <ion-icon name="trash" (click)="deleteFab(i)"></ion-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="1">
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </ng-container>
 </ion-content>

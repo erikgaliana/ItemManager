@@ -20,6 +20,9 @@ import { ItemsFacade } from '@item-manager/items-services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FabModalComponent {
+  searchText = '';
+  keyword = 'title';
+
   constructor(
     public itemsFacade: ItemsFacade,
     private modalCtrl: ModalController,
@@ -40,5 +43,9 @@ export class FabModalComponent {
 
   getImgContent(image: string): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(image);
+  }
+
+  getItems(eventSearch: any) {
+    this.searchText = eventSearch.target.value;
   }
 }
