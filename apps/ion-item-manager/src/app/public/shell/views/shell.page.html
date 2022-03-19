@@ -1,0 +1,51 @@
+<ion-split-pane when="xl" contentId="main-content" when="false">
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle [autoHide]="false">
+          <ion-item button>
+            <ion-icon slot="start" name="list-outline"></ion-icon>
+            <ion-label> Item List </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-grid class="ion-no-padding">
+          <ion-row justify-content-center align-items-center>
+            <ion-col size="2" class="ion-text-left">
+              <ion-buttons>
+                <ion-menu-toggle autoHide="false">
+                  <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                  </ion-button>
+                </ion-menu-toggle>
+              </ion-buttons>
+            </ion-col>
+            <ion-col size="8" class="ion-text-center">
+              <ion-title>Item Manager</ion-title>
+            </ion-col>
+            <ion-col size="2">
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+
+
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-router-outlet></ion-router-outlet>
+    </ion-content>
+  </div>
+</ion-split-pane>

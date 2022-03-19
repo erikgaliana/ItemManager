@@ -9,11 +9,13 @@ import { ItemsModel } from '../../../../models/items-list.models';
 
 export interface ItemsDataState {
   items: ItemsModel[];
+  fabItems: ItemsModel[];
   errors: any;
 }
 
 export const initialItemsDataState: ItemsDataState = {
-  items: [],
+  items: null,
+  fabItems: [],
   errors: null,
 };
 
@@ -29,6 +31,23 @@ const itemsDataReducer = createReducer(
     return {
       ...state,
       errors: action.error,
+    };
+  }),
+  on(ItemsActions.updateFabItems, (state, action) => {
+    return {
+      ...state,
+      fabItems: action.fabItems,
+    };
+  }),
+  on(ItemsActions.clearFabItems, (state) => {
+    return {
+      ...state,
+      fabItems: [],
+    };
+  }),
+  on(ItemsActions.clearDataList, () => {
+    return {
+      ...initialItemsDataState,
     };
   })
 );
