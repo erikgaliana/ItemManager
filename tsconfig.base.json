@@ -16,7 +16,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@item-manager/items-services": ["libs/items-services/src/index.ts"]
+      "@item-manager/items-services": ["libs/items-services/src/index.ts"],
+      "@item-manager/items-models": ["libs/items-services/src/lib/models/items-list.models.ts"],
+      "@item-manager/items-pipes": ["libs/items-services/src/lib/pipes/pipes.module.ts"]
+
     }
   },
   "exclude": ["node_modules", "tmp"]

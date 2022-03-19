@@ -1,46 +1,73 @@
-<ion-content [fullscreen]="true">
+<ion-content>
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button (click)="openFab()">
+            <div *ngIf="(itemsFacade.fabItems$|async).length as fabItems">{{fabItems + '-'}}</div>
 
+            Fab
+        </ion-fab-button>
+    </ion-fab>
+    <ion-grid fixed>
+        <ion-row justify-content-center align-items-center>
+            <ion-col size-xl="2">
 
-
-
-    <ion-card *ngFor="let item of (paginatedItems$|async)">
-
-        <img src="{{item.image}}" />
-
-        <ion-card-content>
-            <ion-card-title>
-                {{item.title}}
-            </ion-card-title>
-            <p>
-                {{item.description}}
-            </p>
-        </ion-card-content>
-
-        <ion-row no-padding>
-            <ion-col>
-                <button ion-button clear small color="danger" icon-start>
-                    <ion-icon name='star'></ion-icon>
-                    Favorite
-                </button>
             </ion-col>
-            <ion-col text-center>
-                <button ion-button clear small color="danger" icon-start>
-                    <ion-icon name='musical-notes'></ion-icon>
-                    Listen
-                </button>
+            <ion-col size-xl="8">
+
+
+                <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+                <ion-toolbar no-border-top>
+                    <ion-segment (ionChange)="segmentChanged($event)">
+                        <ion-segment-button value="title">
+                            <ion-label>Title</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="description">
+                            <ion-label>Description</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="price">
+                            <ion-label>Price</ion-label>
+                        </ion-segment-button>
+
+                        <ion-segment-button value="email">
+                            <ion-label>E-Mail</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+                </ion-toolbar>
+                <ng-container *ngIf="itemsFacade.items$|async">
+                    <ion-card *ngFor="let item of paginatedItems | filter:searchText:keyword">
+
+                        <ion-row class="ion-align-items-center ion-justify-content-center">
+
+                            <img [src]="getImgContent(item.image)" alt="ion" />
+                        </ion-row>
+                        <ion-card-content class="ion-align-items-center">
+                            <ion-card-title> {{item.title}} </ion-card-title>
+                            <p>{{item.description}}</p>
+                            <p>{{item.email}}</p>
+                            <ion-row no-padding>
+                                <ion-col size="8">
+                                    <ion-label color="secondary">
+                                        <b>{{item.price | currency:'€' }}</b>
+                                    </ion-label>
+                                </ion-col>
+                                <ion-col size="4" class="ion-text-right">
+                                    <button ion-button fill="clear" (click)="addFab(item)">
+                                        <ion-icon name="add"></ion-icon>
+                                    </button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-card-content>
+                    </ion-card>
+
+
+                    <ion-infinite-scroll threshold="100px" (ionInfinite)="doInfinite($event)">
+                        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data...">
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                </ng-container>
             </ion-col>
-            <ion-col text-right>
-                <button ion-button clear small color="danger" icon-start>
-                    <ion-icon name='share-alt'></ion-icon>
-                    Share
-                </button>
+            <ion-col size-xl="2">
+
             </ion-col>
         </ion-row>
-
-    </ion-card>
-
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="doInfinite($event)">
-        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+    </ion-grid>
 </ion-content>

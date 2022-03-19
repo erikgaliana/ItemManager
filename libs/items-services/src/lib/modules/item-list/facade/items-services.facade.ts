@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 
 // RxJs
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 // NgRx
 import { select, Store } from '@ngrx/store';
@@ -22,6 +22,10 @@ export class ItemsFacade {
     select(fromSelectors.getItems)
   );
 
+  fabItems$: Observable<ItemsModel[]> = this.parentStore.pipe(
+    select(fromSelectors.getFabItems)
+  );
+
   isItemssLoaded$: Observable<boolean> = this.parentStore.pipe(
     select(fromSelectors.getIsItemsLoaded)
   );
@@ -30,5 +34,25 @@ export class ItemsFacade {
 
   loadItemsData(): void {
     this.parentStore.dispatch(ItemsActions.loadItems());
+  }
+
+  addFab(item: ItemsModel) {
+    this.fabItems$.pipe(take(1)).subscribe((fabItems: ItemsModel[]) => {
+      const newItemFabList = [...fabItems, item];
+      this.parentStore.dispatch(
+        ItemsActions.updateFabItems({ fabItems: newItemFabList })
+      );
+    });
+  }
+
+  deleteFab(i: number): void {
+    this.fabItems$.pipe(take(1)).subscribe((fabItems: ItemsModel[]) => {
+      const deleted = [...fabItems];
+      deleted.splice(i, 1);
+
+      this.parentStore.dispatch(
+        ItemsActions.updateFabItems({ fabItems: deleted })
+      );
+    });
   }
 }

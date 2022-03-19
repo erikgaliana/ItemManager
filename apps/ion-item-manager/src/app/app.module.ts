@@ -18,6 +18,8 @@ import { AppComponent } from './app.component';
 // Routing
 import { AppRoutingModule } from './app-routing.module';
 
+import { PipesModule } from '@item-manager/items-pipes';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -26,6 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    PipesModule,
     StoreDevtoolsModule.instrument({
       maxAge: 30,
     }),

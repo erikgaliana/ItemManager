@@ -6,15 +6,22 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
+// Ionic
+import { ModalController } from '@ionic/angular';
 
 // Rxjs
-import { filter, map, Observable, Subject, take, withLatestFrom } from 'rxjs';
+import { filter, Subject, take } from 'rxjs';
 
 // Store
 import { ItemsFacade } from '@item-manager/items-services';
+import { ItemsModel } from '@item-manager/items-models';
+
+// Modal
+import { FabModalComponent } from '../../fab-modal/views/fab-modal.page';
 
 // Models
-import { ItemsModel } from '@item-manager/items-models';
 
 @Component({
   selector: 'item-manager-item-list',
@@ -24,36 +31,61 @@ import { ItemsModel } from '@item-manager/items-models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemListViewComponent implements OnInit, OnDestroy {
-  paginatedItems$: Observable<ItemsModel[]>;
-  numberOfITems = 10;
+  originalItemList: ItemsModel[] = [];
+  paginatedItems: ItemsModel[] = [];
+  itemsLoaded = 5;
+  searchText = '';
+  keyword = 'title';
 
   private destroyed$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(public itemsFacade: ItemsFacade) {}
+  constructor(
+    public itemsFacade: ItemsFacade,
+    private sanitizer: DomSanitizer,
+    private modalController: ModalController
+  ) {}
 
   ngOnInit(): void {
     this.itemsFacade.loadItemsData();
-    this.firstItems();
+    this.setOriginalItemList();
   }
 
   ngOnDestroy(): void {
     this.finishDestroyedSubscription();
   }
 
-  doInfinite(event: any): void {
-    this.itemsFacade.items$
-      .pipe(take(1), withLatestFrom(this.paginatedItems$))
-      .subscribe(([items, paginatedItems]) => {
-        if (paginatedItems?.length >= items?.length) {
-          event.target.disabled = true;
-          return;
-        }
-      });
+  doInfinite(eventInfinite: any): void {
+    if (this.paginatedItems?.length >= this.originalItemList?.length) {
+      eventInfinite.target.disabled = true;
+      return;
+    }
 
-    setTimeout(() => {
-      this.addMoreItems();
-      event.target.complete();
-    }, 1000);
+    this.addItems();
+    eventInfinite.target.complete();
+  }
+
+  getItems(eventSearch: any) {
+    this.searchText = eventSearch.target.value;
+  }
+
+  segmentChanged(eventSegment: any): void {
+    this.keyword = eventSegment.detail.value;
+  }
+
+  getImgContent(image: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(image);
+  }
+
+  async openFab() {
+    const modal = await this.modalController.create({
+      component: FabModalComponent,
+      cssClass: 'fab-modal',
+    });
+    await modal.present();
+  }
+
+  addFab(item: ItemsModel) {
+    this.itemsFacade.addFab(item);
   }
 
   private finishDestroyedSubscription(): void {
@@ -61,19 +93,20 @@ export class ItemListViewComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  private firstItems(): void {
-    this.paginatedItems$ = this.itemsFacade.items$.pipe(
-      filter((items: ItemsModel[]) => !!items),
-      map((items) => items.slice(0, 5))
-    );
+  private setOriginalItemList(): void {
+    this.itemsFacade.items$
+      .pipe(
+        filter((items) => !!items),
+        take(1)
+      )
+      .subscribe((items) => {
+        this.originalItemList = [...items];
+        this.addItems();
+      });
   }
 
-  private addMoreItems(): void {
-    this.paginatedItems$ = this.itemsFacade.items$.pipe(
-      filter((items: ItemsModel[]) => !!items),
-      map((items) => items.slice(0, this.numberOfITems))
-    );
-
-    this.numberOfITems = this.numberOfITems + 5;
+  private addItems(): void {
+    this.paginatedItems = this.originalItemList.slice(0, this.itemsLoaded);
+    this.itemsLoaded += 5;
   }
 }
