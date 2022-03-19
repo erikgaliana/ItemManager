@@ -15,3 +15,12 @@ export const loadItemsFailure = createAction(
   '[Items List] Load Items List Failure',
   props<{ error: any }>()
 );
+
+export const updateFabItems = createAction(
+  '[Items List] Update Fab Items',
+  props<{ fabItems: ItemsModel[] }>()
+);
+
+export const clearFabItems = createAction('[Items List] Clear Fab Items List');
+
+export const clearDataList = createAction('[Items List] Clear Data');
