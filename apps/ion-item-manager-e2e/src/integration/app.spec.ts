@@ -1,13 +1,13 @@
-import { getGreeting } from '../support/app.po';
-
 describe('ion-item-manager', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => {
+    cy.visit('/');
+  });
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
+  it('shows the landing page', () => {
+    cy.contains('Item Manager');
+  });
 
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome ion-item-manager');
+  it('shows 5 items products', () => {
+    cy.get('ion-card').should('have.length', '5');
   });
 });
