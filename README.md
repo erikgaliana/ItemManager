@@ -44,7 +44,7 @@ version 1.0.0
 
 ### E2E test
 
-1. Run "npm run test:e2e" to run unit e2e testing.
+1. Run "npm run test:e2e" to run e2e testing.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
